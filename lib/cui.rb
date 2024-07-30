@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'cui/input'
+require 'io/console'
 
 # Simple console user interface tools.
-module CUI
-  extend CUI
-end
+module CUI; end
+
+require_relative 'cui/input'
