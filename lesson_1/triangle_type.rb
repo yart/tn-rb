@@ -2,27 +2,6 @@
 
 require_relative 'lib/entertaining_math'
 
-def dimensions
-  dimensions = []
-
-  loop do
-    return dimensions if dimensions.size == 3
-
-    user_input = CUI.input
-
-    if user_input.instance_of?(Integer) || user_input.instance_of?(Float)
-      dimensions << user_input
-      next
-    end
-
-    splitted_user_input = user_input.gsub(/[^0-9,]/, '').squeeze(',').split(',').map(&:to_i).take(3)
-
-    return splitted_user_input if splitted_user_input.count == 3
-
-    dimensions += splitted_user_input
-  end
-end
-
 answer = {
   EntertainingMath::Trig::Triangle::EQUILATERAL => 'равносторонний',
   EntertainingMath::Trig::Triangle::ISOSCELES => 'равнобедренный',
@@ -35,7 +14,10 @@ puts 'Вы можете ввести длины сторон треугольн�
 puts 'так и все сразу, разделяя их запятой. Если будет введено'
 puts 'больше трёх чисел, учитываться будут только первые три.'
 puts 'Обратите внимание, что принимаются только целые числа.'
-given_dimensions = dimensions
+
+user_input = CUI::Input.new(list: true, type: CUI::Input::NUMBER, max_items: 3)
+given_dimensions = user_input.receive
+
 type = EntertainingMath::Trig.triangle_type(*given_dimensions)
 
 puts "\nСудя по размерам сторон — #{given_dimensions.join(', ')} — это #{answer[type]} треугольник."
