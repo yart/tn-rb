@@ -22,7 +22,6 @@ module EntertainingMath
         # @param dimensions [Array<Integer>] must contain 3 items
         # @return [Symbol]
         def type(*dimensions)
-          pp dimensions
           return EQUILATERAL if equilateral?(dimensions)
           return ISOSCELES   if isosceles?(dimensions)
           return SQUARE      if square?(dimensions)
