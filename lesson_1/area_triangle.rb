@@ -3,6 +3,6 @@
 require_relative 'lib/entertaining_math'
 
 puts "Вычисляем площадь треугольника.\n"
-height = CUI.input('Введите высоту треугольника')
-basement = CUI.input('Введите длину основания треугольника')
-puts "\nПлощадь треугольника равна: #{EntertainingMath::Trig.triangle_area(basement, height)}"
+height   = CUI::Input.new(text: 'Введите высоту треугольника', type: CUI::Input::NUMBER).receive
+basement = CUI::Input.new(text: 'Введите длину основания треугольника', type: CUI::Input::NUMBER).receive
+puts "\nПлощадь треугольника с высотой #{height} и основанием #{basement}, равна: #{EntertainingMath::Trig.triangle_area(basement, height)}"

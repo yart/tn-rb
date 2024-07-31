@@ -3,7 +3,7 @@
 module EntertainingMath
   # Calculates a human “ideal” weight.
   module IdealWeight
-    extend CUI
+    include CUI
 
     MESSAGE = 'Ваш вес уже оптимальный'
 
@@ -38,8 +38,8 @@ module EntertainingMath
     def self.run
       puts 'Приложение попытается определить ваш «идеальный» вес.'
 
-      name   = input('Напишите ваше имя')
-      height = input('Напишите ваш рост в сантиметрах')
+      name   = Input.new(text: 'Напишите ваше имя').receive
+      height = Input.new(text: 'Напишите ваш рост в сантиметрах', type: Input::NUMBER).receive
       @user  = Human.new(name, height)
 
       puts perform_answer
