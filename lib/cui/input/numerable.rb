@@ -5,7 +5,7 @@ module CUI
   module Input
     # Provides methods for hanbling numbers.
     module Numerable
-      def setup_negatives(settings) = @allow_negatives = settings[:allow_negatives] || false
+      def setup_negatives(**settings) = @allow_negatives = settings[:allow_negatives] || false
       # @return [Integer]
       def convert(entity) = entity.to_i
       # @return [Array<Integer>]
