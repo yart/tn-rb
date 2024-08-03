@@ -39,10 +39,14 @@ module CUI
         nil
       end
 
-      # @return [#read]
-      def input_stream
+      def show_prompt
         @line_counter += 1
         print @prompt
+      end
+
+      # @return [#read]
+      def input_stream
+        show_prompt
         gets.chomp
       end
 
