@@ -10,9 +10,11 @@ module CUI
       # @param [Hash] settings
       # @option settings [String] :label an explanation for prompt
       # @option settings [String] :prompt '> " by default
+      # @option settings [Boolean] :float
       # @option settings [Boolean] :allow_negatives when input type is Integer, false by default
       def initialize(**)
         super(**)
+        setup_floats(**)
         setup_negatives(**)
       end
     end
