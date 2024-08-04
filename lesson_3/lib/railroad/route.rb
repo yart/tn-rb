@@ -14,19 +14,10 @@ module Railroad
       end
     end
 
-    def initialize(*list)
-      raise StationsNumberError, list.size if list.size != STATIONS_ON_START
+    def initialize(*list) = list.size != STATIONS_ON_START ? raise(StationsNumberError, list.size) : @list = list
 
-      @list = list
-    end
-
-    def list
-      @list.map(&:name)
-    end
-
-    def add(station)
-      @list.insert(-2, station)
-    end
+    def list              = @list.map(&:name)
+    def add(station)      = @list.insert(-2, station)
 
     def remove(station)
       @list.delete(station) if station != @list.first || station != @list.last
