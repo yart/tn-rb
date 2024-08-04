@@ -34,7 +34,7 @@ module CUI
 
       def limit_reached?(entity)     = limited? && entity.size >= @limit
       def cancelled_by_user?(entity) = !limited? && !entity.nil? && entity.empty?
-      def split_list(entity)         = entity.squeeze(',').split(',').map(&:to_s).take(@limit)
+      def split_list(entity)         = entity.squeeze(@separator).split(@separator).map(&:to_s).take(@limit)
       def list_trait?(entity)        = !/#{@separator}/.match?(entity)
       def bulk_convert(entities)     = entities
 

@@ -27,7 +27,7 @@ module CUI
       end
 
       def split_list(entity)
-        entity.gsub(numbers, '').squeeze(',').split(',').map(&:to_i).take(@limit)
+        entity.gsub(numbers, '').squeeze(@separator).split(@separator).map(&:to_i).take(@limit)
       end
 
       def list_trait?(entity)
