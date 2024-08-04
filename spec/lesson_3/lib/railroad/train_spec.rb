@@ -27,17 +27,17 @@ describe Railroad::Train do
   let(:route) { DummyRoute.new(list: stations) }
 
   context 'when train created' do
-    it { is_expecte.to respond_to(:number) }
-    it { is_expecte.to respond_to(:type) }
-    it { is_expecte.to respond_to(:wagons) }
-    it { is_expecte.to respond_to(:attach) }
-    it { is_expecte.to respond_to(:detach) }
-    it { is_expecte.to respond_to(:speed) }
-    it { is_expecte.to respond_to(:speed=).with(1).argument }
-    it { is_expecte.to respond_to(:stop) }
-    it { is_expecte.to respond_to(:route=).with(1).argument }
-    it { is_expecte.to respond_to(:go).with(1).argument }
-    it { is_expecte.to respond_to(:location).with(0..1).arguments }
+    it { expect(cargo).to respond_to(:number) }
+    it { expect(cargo).to respond_to(:type) }
+    it { expect(cargo).to respond_to(:wagons) }
+    it { expect(cargo).to respond_to(:attach) }
+    it { expect(cargo).to respond_to(:detach) }
+    it { expect(cargo).to respond_to(:speed) }
+    it { expect(cargo).to respond_to(:speed=).with(1).argument }
+    it { expect(cargo).to respond_to(:stop) }
+    it { expect(cargo).to respond_to(:route=).with(1).argument }
+    it { expect(cargo).to respond_to(:go).with(1).argument }
+    it { expect(cargo).to respond_to(:location).with(0..1).arguments }
 
     it { expect(cargo.number).to eq 'test_1' }
     it { expect(cargo.type).to eq CARGO }
