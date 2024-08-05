@@ -9,7 +9,7 @@ end
 class DummyRoute
   attr_reader :list
 
-  def initialize(list: []) = @list = list
+  def initialize(list) = @list = list
 end
 
 describe Railroad::Train do
@@ -24,7 +24,7 @@ describe Railroad::Train do
       DummyStation.new('last')
     ]
   end
-  let(:route) { DummyRoute.new(list: stations) }
+  let(:route) { DummyRoute.new(stations) }
 
   context 'when train created' do
     it { expect(cargo).to respond_to(:number) }
@@ -69,7 +69,7 @@ describe Railroad::Train do
   context 'when a route given' do
     before { cargo.route = route }
 
-    it { expect(cargo.current_station).to eq stations.first }
+    it { expect(cargo.location(:current)).to eq stations.first }
   end
 
   context 'when moving along the route' do
@@ -79,16 +79,16 @@ describe Railroad::Train do
       before { passenger.go(Railroad::Train::FORWARD) }
 
       it { expect(passenger.speed).not_to eq 0 }
-      it { expect(passenger.current_station).to eq stations[1] }
-      it { expect(passenger.previous_station).to eq stations[0] }
-      it { expect(passenger.next_station).to eq stations[2] }
+      it { expect(passenger.location(:current)).to eq stations[1] }
+      it { expect(passenger.location(:previous)).to eq stations[0] }
+      it { expect(passenger.location(:next)).to eq stations[2] }
     end
 
     context 'when current station is the last one, it can not move forward' do
       before { 4.times { passenger.go(Railroad::Train::FORWARD) } }
 
-      it { expect(passenger.current_station).to eq station[3] }
-      it { expect(passenger.next_station).to be_nil }
+      it { expect(passenger.location(:current)).to eq stations[3] }
+      it { expect(passenger.location(:next)).to be_nil }
     end
 
     context 'when moving backward' do
@@ -97,16 +97,17 @@ describe Railroad::Train do
         2.times { passenger.go(Railroad::Train::BACKWARD) }
       end
 
-      it { expect(passenger.current_station).to eq station[1] }
-      it { expect(passenger.previous_station).to eq stations[0] }
-      it { expect(passenger.next_station).to eq stations[2] }
+      it { expect(passenger.speed).not_to eq 0 }
+      it { expect(passenger.location(:current)).to eq stations[1] }
+      it { expect(passenger.location(:previous)).to eq stations[0] }
+      it { expect(passenger.location(:next)).to eq stations[2] }
     end
 
     context 'when current station is the first one, it can not move backward' do
       before { passenger.go(Railroad::Train::BACKWARD) }
 
-      it { expect(passenger.current_station).to eq station[0] }
-      it { expect(passenger.previous_station).to be_nil }
+      it { expect(passenger.location(:current)).to eq stations[0] }
+      it { expect(passenger.location(:previous)).to be_nil }
     end
   end
 end
