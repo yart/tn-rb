@@ -11,6 +11,9 @@ module Railroad
     attr_accessor :speed
     attr_reader :number, :type, :wagons
 
+    # @param number [String]
+    # @param type [Symbol]
+    # @param wagons [Integer]
     def initialize(number:, type:, wagons:)
       @number   = number
       @type     = type
@@ -20,23 +23,30 @@ module Railroad
       @location = { current: nil, previous: nil, next: nil }
     end
 
+    # @return [Integer]
     def attach
       @wagons += 1 if can_attach?
     end
 
+    # @return [Integer, nil]
     def detach
       @wagons -= 1 if can_detach?
     end
 
+    # @return [Integer]
     def stop = @speed = 0
 
+    # @param route [Railroad::Route]
+    # @return [Railroad::Route]
     def route=(route)
-      @route = route
-
       @location[:current] = 0
       @location[:next]    = 1
+
+      @route = route
     end
 
+    # @param kind [Symbol]
+    # @return [Hash, Railroad::Station, nil]
     def location(kind = nil)
       if kind.nil?
         return {
@@ -49,6 +59,7 @@ module Railroad
       @route.list[@location[kind]] unless @location[kind].nil?
     end
 
+    # @param direction [Symbol]
     def go(direction)
       @direction = direction
       @speed     = DEFAULT_SPEED
