@@ -5,8 +5,6 @@ module Lesson4
     # Manages trains.
     class CargoTrain < Train
       # @param number [String]
-      # @param type [Symbol]
-      # @param wagons [Integer]
       def initialize(number:)
         super(number:)
 

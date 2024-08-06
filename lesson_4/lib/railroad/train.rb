@@ -8,8 +8,6 @@ module Lesson4
       attr_reader :number, :wagon_type, :wagons, :default_speed
 
       # @param number [String]
-      # @param type [Symbol]
-      # @param wagons [Integer]
       def initialize(number:)
         @number   = number
         @wagons   = []
