@@ -2,6 +2,7 @@
 
 require_relative '../lib/cui'
 require_relative '../lesson_3/lib/railroad'
+require_relative '../lesson_4/lib/railroad'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
