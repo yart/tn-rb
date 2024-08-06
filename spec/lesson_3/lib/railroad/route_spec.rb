@@ -6,7 +6,7 @@ class DummyStation
   def initialize(name) = @name = name
 end
 
-describe Railroad::Route do
+describe Lesson3::Railroad::Route do
   let!(:route) { described_class.new(DummyStation.new('first'), DummyStation.new('last')) }
 
   context 'when no stations passed to a new route' do

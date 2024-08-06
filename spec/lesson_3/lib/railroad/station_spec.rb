@@ -6,11 +6,11 @@ class DummyTrain
   def initialize(type:) = @type = type
 end
 
-describe Railroad::Station do
+describe Lesson3::Railroad::Station do
   subject(:station) { described_class.new('test') }
 
-  let(:cargo)     { DummyTrain.new(type: Railroad::CARGO) }
-  let(:passenger) { DummyTrain.new(type: Railroad::PASSENGER) }
+  let(:cargo)     { DummyTrain.new(type: Lesson3::Railroad::CARGO) }
+  let(:passenger) { DummyTrain.new(type: Lesson3::Railroad::PASSENGER) }
 
   context 'when created' do
     it { is_expected.to respond_to(:name) }
@@ -34,8 +34,8 @@ describe Railroad::Station do
       station.handle(cargo)
       station.handle(passenger)
 
-      expect(station.trains(Railroad::CARGO)).to eq [cargo]
-      expect(station.trains(Railroad::PASSENGER)).to eq [passenger]
+      expect(station.trains(Lesson3::Railroad::CARGO)).to eq [cargo]
+      expect(station.trains(Lesson3::Railroad::PASSENGER)).to eq [passenger]
     end
 
     it 'send trains' do
