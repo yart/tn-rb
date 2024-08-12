@@ -5,6 +5,8 @@ module CUI
   module Input
     # Provides basic functionality for console input.
     class Text
+      include View
+
       PROMPT = '> '
 
       # @param [Hash] settings
@@ -13,8 +15,7 @@ module CUI
       def initialize(**settings)
         @label  = settings[:label]
         @prompt = settings[:prompt] || PROMPT
-
-        @line_counter = 0
+        @lines  = 0
 
         perform_prompt
       end
@@ -40,7 +41,7 @@ module CUI
       end
 
       def show_prompt
-        @line_counter += 1
+        @lines += 1
         print @prompt
       end
 
@@ -51,8 +52,8 @@ module CUI
       end
 
       def clear_lines
-        @line_counter.times { $stdout.print CLEAR_LINE }
-        @line_counter = 0
+        @lines.times { clear_line }
+        @lines = 0
       end
 
       # @return [#read]
