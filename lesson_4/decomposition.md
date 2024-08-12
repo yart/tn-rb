@@ -6,6 +6,8 @@
 
 ### main.rb
 
+### app.rb
+
 Подключение библиотек
 
 Запуск View приложения с Dashboard и MainMenu.
@@ -48,47 +50,34 @@ App::View
 
 Показ дашборда, списков и инпутов.
 
-#### view/base.rb
+#### view/base_menu.rb
 
-App::View::Base
-
-Может отрисовать текущую страницу состоящую из дашборда сверху и текущего меню под ним.
-Данные для дашборда и меню поступают от App::Contorller
-Данные о действиях пользователя передаются в контроллер.
+App::View::BaseMenu
 
 #### view/dashboard.rb
 
-##### view/dashboard/routes.rb
+App::View::Dashboard
 
-##### view/dashboard/stations.rb
+App::View::Dashboard#routes
+App::View::Dashboard#stations
+App::View::Dashboard#trains
 
-##### view/dashboard/trains.rb
 
-#### view/menu.rb 
+#### view/main.rb 
 
-### view/routes.rb
+App::View::Main < App::View::BaseMenu
 
-#### view/routes/add.rb
+#### view/routes.rb
 
-#### view/routes/edit.rb
+App::View::Routes < App::View::BaseMenu
 
-#### view/routes/list.rb
+#### view/stations.rb
 
-### view/stations.rb
-
-#### view/stations/add.rb
-
-#### view/stations/edit.rb
-
-#### view/stations/list.rb
+App::View::Stations < App::View::BaseMenu
 
 ### view/trains.rb
 
-#### view/trains/add.rb
-
-#### view/trains/edit.rb
-
-#### view/trains/list.rb
+App::View::Trains < App::View::BaseMenu
 
 ### controller.rb
 
