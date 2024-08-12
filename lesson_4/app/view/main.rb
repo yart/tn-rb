@@ -4,7 +4,7 @@ module Lesson4
   module App
     module View
       # Builds and draws app's main menu.
-      class Menu < BaseMenu
+      class Main < BaseMenu
         def list = CUI::List.new(**list_settings)
 
         private
