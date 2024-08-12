@@ -1,0 +1,78 @@
+---
+numerals:
+  _0:   :zero
+  _1:   :one
+  _2-4: :few
+  _5-9: :many
+
+dashboard:
+  stations:
+    title:     'Станции'
+    trains:    'Поезда'
+    passenger: 'Пасс. '
+    cargo:     'Товар.'
+  routes:
+    title:     'Маршруты'
+    stations:  'Станции'
+    trains:    'Поезда'
+  trains:
+    title:     'Поезда'
+    wagons:    'Вагоны'
+    route:     'Маршрут'
+
+menu:
+  defaults:
+    quit:     '[Выход]'
+    back:     '[Вернуться]'
+    save:     '[Сохранить]'
+    cancel:   '[Отмена]'
+    add:      '[Добавить]'
+    delete:   '[Удалить]'
+    attach:   '[Прицепить]'
+    detach:   '[Отцепить]'
+    forward:  '[Вперёд]'
+    backward: '[Назад]'
+    edit:     '[ред.] '
+
+  main:
+    stations: '+ Станции'
+    routes:   '+ Маршруты'
+    trains:   '+ Поезда'
+
+  stations:
+    list:        'СТАНЦИИ'
+    add:         'НОВАЯ СТАНЦИЯ'
+    add_prompt:  'Название: '
+    edit:        'СТАНЦИЯ {{}}'
+    edit_prompt: 'Новое название: '
+    numerals:
+      zero: 'станций'
+      one:  'станция'
+      few:  'станции'
+      many: 'станций'
+
+  routes:
+    list:     'МАРШРУТЫ'
+    add:      'НОВЫЙ МАРШРУТ'
+    edit:     'МАРШРУТ {{}}'
+    stations: 'Станции:'
+    can_add:  'Можно добавить:'
+
+  trains:
+    list:          'ПОЕЗДА'
+    add:           'НОВЫЙ ПОЕЗД'
+    add_prompt:    '> '
+    add_passenger: '+ Пассажирский'
+    add_cargo:     '+ Товарный'
+    add_number:    'НОВЫЙ ПОЕЗД | Номер'
+    add_wagons:    'НОВЫЙ ПОЕЗД | Состав: {{}}'
+    add_route:     'НОВЫЙ ПОЕЗД | Маршрут: {{}}'
+    edit:          'ПОЕЗД {{}}'
+    edit_wagons:   'ПОЕЗД {{}} | Состав: {{}}'
+    edit_route:    'ПОЕЗД {{}} | Маршрут: {{}}'
+    edit_move:     'ПОЕЗД {{}} | Станция: {{}}'
+    numerals:
+      zero: 'вагонов'
+      one:  'вагон'
+      few:  'вагона'
+      many: 'вагонов'
