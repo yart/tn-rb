@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'model/base'
-require_relative 'model/routes'
-require_relative 'model/stations'
-require_relative 'model/trains'
+require_relative 'model/route'
+require_relative 'model/station'
+require_relative 'model/train'
 
 module Lesson4
   module App
