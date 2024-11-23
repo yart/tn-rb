@@ -1,0 +1,34 @@
+module DatabaseAdapter
+  class SimpleDB < Base
+    DB_PATH: String
+
+    @db_path: String
+
+    # Initializes the SimpleDB adapter.
+    def initialize: (?String path) -> void
+
+    # Finds a record by its ID in the specified table.
+    def find: (table: String, id: String) -> Hash[Symbol, untyped]?
+
+    # Retrieves all records from the specified table.
+    def all: (table: String) -> Array[Hash[Symbol, untyped]]
+
+    # Creates a new record in the specified table.
+    def create: (table: String, attributes: Hash[Symbol, untyped]) -> String
+
+    # Updates a record by its ID in the specified table.
+    def update: (table: String, id: String, attributes: Hash[Symbol, untyped]) -> void
+
+    # Deletes a record by its ID in the specified table.
+    def delete: (table: String, id: String) -> void
+
+    private
+
+    def table_path: (String) -> String
+    def file_path: (String, String) -> String
+    def validate_opts: (Hash[Symbol, untyped], Hash[Symbol, untyped]) -> untyped
+    def write_to_file: (String, String, Hash[String, untyped]) -> void
+    def load_record: (table: String, id: String) -> Hash[Symbol, untyped]?
+    def load_all_records: (String) -> Array[Hash[Symbol, untyped]]
+  end
+end

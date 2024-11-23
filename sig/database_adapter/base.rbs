@@ -1,0 +1,18 @@
+module DatabaseAdapter
+  class Base
+    # Finds a record by its ID in the specified table.
+    def find: (table: String, id: String) -> Hash[String, untyped]?
+
+    # Retrieves all records from the specified table.
+    def all: (table: String) -> Array[Hash[String, untyped]]
+
+    # Creates a new record in the specified table.
+    def create: (table: String, attributes: Hash[String, untyped]) -> String
+
+    # Updates a record by its ID in the specified table.
+    def update: (table: String, id: String, attributes: Hash[String, untyped]) -> void
+
+    # Deletes a record by its ID in the specified table.
+    def delete: (table: String, id: String) -> void
+  end
+end
