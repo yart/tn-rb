@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require_relative '../lib/cui'
+require_relative '../lib/database_adapter'
 require_relative '../lesson_3/lib/railroad'
 require_relative '../lesson_4/lib/railroad'
+require_relative '../lesson_4/app/model'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
