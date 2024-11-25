@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class DummyTrain
-  attr_reader :type
+  attr_reader :wagon_type
 
-  def initialize(type:) = @type = type
+  def initialize(wagon_type:) = @wagon_type = wagon_type
 end
 
 describe Lesson4::Railroad::Station do
-  subject(:station) { described_class.new('test') }
+  subject(:station) { described_class.new('Test Station') }
 
-  let(:cargo)     { Lesson4::Railroad::CargoTrain.new(number: 'cargo') }
-  let(:passenger) { Lesson4::Railroad::PassengerTrain.new(number: 'passenger') }
+  let(:cargo_wagon_class) { Class.new }
+  let(:passenger_wagon_class) { Class.new }
+  let(:cargo_train) { DummyTrain.new(wagon_type: cargo_wagon_class) }
+  let(:passenger_train) { DummyTrain.new(wagon_type: passenger_wagon_class) }
 
   context 'when created' do
     it { is_expected.to respond_to(:name) }
@@ -18,32 +20,34 @@ describe Lesson4::Railroad::Station do
     it { is_expected.to respond_to(:handle).with(1).argument }
     it { is_expected.to respond_to(:send).with(1).argument }
 
-    it { expect(station.name).to eq 'test' }
+    it 'has the correct name' do
+      expect(station.name).to eq('Test Station')
+    end
   end
 
   context 'when handling trains' do
-    it 'handles trains one by one and shows all trains inside' do
-      station.handle(cargo)
-      expect(station.trains).to eq [cargo]
+    it 'adds trains to the station and lists all trains' do
+      station.handle(cargo_train)
+      expect(station.trains).to eq [cargo_train]
 
-      station.handle(passenger)
-      expect(station.trains).to eq [cargo, passenger]
+      station.handle(passenger_train)
+      expect(station.trains).to eq [cargo_train, passenger_train]
     end
 
-    it 'shows trains by type' do
-      station.handle(cargo)
-      station.handle(passenger)
+    it 'filters trains by wagon type' do
+      station.handle(cargo_train)
+      station.handle(passenger_train)
 
-      expect(station.trains(Lesson4::Railroad::CargoTrain)).to eq [cargo]
-      expect(station.trains(Lesson4::Railroad::PassengerTrain)).to eq [passenger]
+      expect(station.trains(cargo_wagon_class)).to eq [cargo_train]
+      expect(station.trains(passenger_wagon_class)).to eq [passenger_train]
     end
 
-    it 'send trains' do
-      station.handle(cargo)
-      station.handle(passenger)
+    it 'removes trains from the station' do
+      station.handle(cargo_train)
+      station.handle(passenger_train)
 
-      station.send(cargo)
-      expect(station.trains).to eq [passenger]
+      station.send(cargo_train)
+      expect(station.trains).to eq [passenger_train]
     end
   end
 end

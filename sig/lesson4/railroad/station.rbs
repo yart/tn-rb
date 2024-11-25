@@ -1,0 +1,18 @@
+interface _Train
+  def wagon_type: () -> Class
+end
+
+module Lesson4
+  module Railroad
+    class Station
+      @trains: Array[_Train]
+
+      attr_reader name: String
+
+      def initialize: (String name) -> void
+      def trains: (Class? wagon_type) -> Array[_Train]
+      def handle: (_Train train) -> Array[_Train]
+      def send: (_Train train) -> _Train?
+    end
+  end
+end
