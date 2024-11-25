@@ -1,0 +1,48 @@
+interface _Route
+  def list: () -> Array[String]
+end
+
+interface _Wagon
+  def compatible_with?: (_Train) -> bool
+end
+
+module Lesson4
+  module Railroad
+    class Train
+      @speed: Integer
+      @number: String
+      @wagon_type: Class
+      @wagons: Array[_Wagon]
+      @default_speed: Integer
+      @route: Array[_Station]
+      @location: { current: Integer?, previous: Integer?, next: Integer? }
+      @direction: Symbol
+
+      attr_accessor speed: Integer
+      attr_reader number: String
+      attr_reader wagon_type: Class
+      attr_reader wagons: Array[_Wagon]
+      attr_reader default_speed: Integer
+
+      def initialize: (number: String) -> void
+      def attach: (_Wagon wagon) -> Array[_Wagon]?
+      def detach: () -> _Wagon?
+      def stop: () -> Integer
+      def route=: (_Route route) -> _Route
+      def location: (Symbol? kind) -> String? | -> Hash[Symbol, String?]
+      def backward: () -> void
+      def forward: () -> void
+
+      private
+
+      def go: -> void
+      def can_attach?: -> bool
+      def can_detach?: -> bool
+      def move: -> Integer
+      def can_move?: -> bool
+      def fetch_current_location: -> void
+      def fetch_previous_location: -> void
+      def fetch_next_location: -> void
+    end
+  end
+end
