@@ -2,8 +2,9 @@
 
 describe Lesson4::App do
   describe '.l10n' do
-    context 'when the localization file is valid' do
+    context 'when the localization path is configured' do
       before do
+        Lesson4::App::Config.l10n_path = '/path/to/l10n.yml'
         allow(YAML).to receive(:load_file)
           .and_return({ key: 'value' })
       end
@@ -13,25 +14,29 @@ describe Lesson4::App do
       end
     end
 
-    context 'when the localization file is missing' do
-      before do
-        allow(YAML).to receive(:load_file)
-          .and_raise(Errno::ENOENT)
-      end
+    context 'when the localization path is not configured' do
+      before { Lesson4::App::Config.l10n_path = nil }
 
-      it 'raises a LocalizationError' do
-        expect { described_class.l10n }.to raise_error(Lesson4::App::LocalizationError, /Localization file error/)
+      it 'raises a ConfigurationError' do
+        expect { described_class.l10n }.to raise_error(Lesson4::App::Config::ConfigurationError, /l10n_path/)
+      end
+    end
+  end
+
+  describe '.db_adapter' do
+    context 'when the database adapter is configured' do
+      before { Lesson4::App::Config.db_adapter = :adapter }
+
+      it 'returns the configured database adapter' do
+        expect(described_class.db_adapter).to eq :adapter
       end
     end
 
-    context 'when the localization file has syntax errors' do
-      before do
-        allow(YAML).to receive(:load_file)
-          .and_raise(Psych::SyntaxError.new('file', 0, 0, 0, 'bad syntax', 'file'))
-      end
+    context 'when the database adapter is not configured' do
+      before { Lesson4::App::Config.db_adapter = nil }
 
-      it 'raises a LocalizationError' do
-        expect { described_class.l10n }.to raise_error(Lesson4::App::LocalizationError, /Localization file error/)
+      it 'raises a ConfigurationError' do
+        expect { described_class.db_adapter }.to raise_error(Lesson4::App::Config::ConfigurationError, /db_adapter/)
       end
     end
   end
@@ -39,17 +44,6 @@ describe Lesson4::App do
   describe '.dir' do
     it 'returns the directory path of the application' do
       expect(described_class.dir).to eq File.expand_path('../../lesson_4', __dir__)
-    end
-  end
-
-  describe '.db_adapter' do
-    it 'returns an instance of DatabaseAdapter::SimpleDB' do
-      expect(described_class.db_adapter).to be_an_instance_of(DatabaseAdapter::SimpleDB)
-    end
-
-    it 'initializes the adapter with the correct path' do
-      expect(described_class.db_adapter.instance_variable_get(:@db_path))
-        .to eq "#{described_class.dir}/db/simple_db"
     end
   end
 end
