@@ -39,7 +39,7 @@ module DatabaseAdapter
     # @raise [NotImplementedError] if the method is not implemented in a subclass
     # @return [Hash, nil] the record as a hash or nil if not found
     def find(table:, id:)
-      raise NotImplementedError, "Subclasses must implement the `find` method"
+      raise NotImplementedError, 'Subclasses must implement the `find` method'
     end
 
     # Retrieves all records from the specified table.
@@ -48,7 +48,7 @@ module DatabaseAdapter
     # @raise [NotImplementedError] if the method is not implemented in a subclass
     # @return [Array<Hash>] an array of hashes representing records
     def all(table:)
-      raise NotImplementedError, "Subclasses must implement the `all` method"
+      raise NotImplementedError, 'Subclasses must implement the `all` method'
     end
 
     # Creates a new record in the specified table.
@@ -58,7 +58,7 @@ module DatabaseAdapter
     # @raise [NotImplementedError] if the method is not implemented in a subclass
     # @return [String] the ID of the created record
     def create(table:, attributes:)
-      raise NotImplementedError, "Subclasses must implement the `create` method"
+      raise NotImplementedError, 'Subclasses must implement the `create` method'
     end
 
     # Updates a record by its ID in the specified table.
@@ -69,7 +69,7 @@ module DatabaseAdapter
     # @raise [NotImplementedError] if the method is not implemented in a subclass
     # @return [void]
     def update(table:, id:, attributes:)
-      raise NotImplementedError, "Subclasses must implement the `update` method"
+      raise NotImplementedError, 'Subclasses must implement the `update` method'
     end
 
     # Deletes a record by its ID in the specified table.
@@ -79,7 +79,7 @@ module DatabaseAdapter
     # @raise [NotImplementedError] if the method is not implemented in a subclass
     # @return [void]
     def delete(table:, id:)
-      raise NotImplementedError, "Subclasses must implement the `delete` method"
+      raise NotImplementedError, 'Subclasses must implement the `delete` method'
     end
   end
 end

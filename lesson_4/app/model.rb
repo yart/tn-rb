@@ -63,7 +63,7 @@ module Lesson4
 
           # Returns the name of the table associated with the model.
           # @return [String] the table name in snake_case
-          def table_name = @table_name ||= "#{name&.split('::')&.last.gsub(/([a-z\d])([A-Z])/, '\1_\2').downcase}s"
+          def table_name = @table_name ||= "#{name&.split('::')&.last&.gsub(/([a-z\d])([A-Z])/, '\1_\2')&.downcase}s"
 
           # Finds a record by its ID and returns it as an instance of the model.
           #
