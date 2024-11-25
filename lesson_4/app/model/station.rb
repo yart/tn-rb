@@ -3,11 +3,7 @@
 module Lesson4
   module App
     module Model
-      class Station < Base
-        private
-
-        def name = :station
-      end
+      class Station < Base; end
     end
   end
 end

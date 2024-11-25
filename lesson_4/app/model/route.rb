@@ -3,11 +3,7 @@
 module Lesson4
   module App
     module Model
-      class Route < Base
-        private
-
-        def name = :route
-      end
+      class Route < Base; end
     end
   end
 end

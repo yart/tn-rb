@@ -3,11 +3,7 @@
 module Lesson4
   module App
     module Model
-      class Train < Base
-        private
-
-        def name = :train
-      end
+      class Train < Base; end
     end
   end
 end
