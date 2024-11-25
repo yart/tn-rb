@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
-class DummyTrain
-  attr_reader :wagon_type
-
-  def initialize(wagon_type:) = @wagon_type = wagon_type
-end
-
 describe Lesson4::Railroad::Station do
   subject(:station) { described_class.new('Test Station') }
 
   let(:cargo_wagon_class) { Class.new }
   let(:passenger_wagon_class) { Class.new }
-  let(:cargo_train) { DummyTrain.new(wagon_type: cargo_wagon_class) }
-  let(:passenger_train) { DummyTrain.new(wagon_type: passenger_wagon_class) }
+  let(:cargo_train) { instance_double('StubbedTrain', wagon_type: cargo_wagon_class) }
+  let(:passenger_train) { instance_double('StubbedTrain', wagon_type: passenger_wagon_class) }
 
   context 'when created' do
     it { is_expected.to respond_to(:name) }
