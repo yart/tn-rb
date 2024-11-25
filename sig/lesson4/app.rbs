@@ -5,39 +5,29 @@ module Lesson4
         self.@table_name: String
 
         attr_accessor self.db_adapter: DatabaseAdapter::Base?
-
-        # ID of the record
         attr_reader id: String?
-
-        # Attributes of the record
         attr_accessor attributes: Hash[String, untyped]
 
-        # Returns the table name associated with the model.
         def self.table_name: () -> String
-
-        # Finds a record by its ID.
         def self.find: (id: String) -> Base?
-
-        # Retrieves all records from the associated table.
         def self.all: () -> Array[Base]
-
-        # Creates a new record in the associated table.
         def self.create: (attributes: Hash[String, untyped]) -> Base
 
-        # Initializes a new model instance.
         def initialize: (attributes: Hash[String, untyped]) -> void
-
-        # Saves the current model instance to the database.
         def save: () -> Base
-
-        # Deletes the current model instance from the database.
         def destroy: () -> void
 
         private
 
-        # Wraps raw data into a model instance or returns nil.
         def self.wrap: (Hash[String, untyped]?) -> Base?
       end
     end
+
+    class LocalizationError < StandardError
+    end
+
+    def self.l10n: () -> Hash[Symbol, untyped]
+    def self.dir: () -> String?
+    def self.db_adapter: () -> DatabaseAdapter::SimpleDB
   end
 end
