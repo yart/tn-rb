@@ -2,6 +2,8 @@
 
 module Lesson4
   module Railroad
-    class CargoWagon < Wagon; end
+    # Represents a cargo wagon.
+    class CargoWagon < Wagon
+    end
   end
 end

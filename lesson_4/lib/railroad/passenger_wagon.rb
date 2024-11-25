@@ -2,6 +2,8 @@
 
 module Lesson4
   module Railroad
-    class PassengerWagon < Wagon; end
+    # Represents a passenger wagon.
+    class PassengerWagon < Wagon
+    end
   end
 end

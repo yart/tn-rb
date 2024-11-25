@@ -1,0 +1,11 @@
+interface _Trane
+  def wagon_type: () -> _Wagon
+end
+
+module Lesson4
+  module Railroad
+    class Wagon
+      def compatible_with?: (_Train train) -> bool
+    end
+  end
+end
