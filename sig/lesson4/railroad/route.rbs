@@ -1,0 +1,22 @@
+interface _Station
+  def name: () -> String
+end
+
+module Lesson4
+  module Railroad
+    class Route
+      STATIONS_ON_START: Integer
+
+      class StationsNumberError < StandardError
+        def initialize: (Integer number) -> void
+      end
+
+      @list: Array[Station]
+
+      def initialize: (*_Station) -> void
+      def list: () -> Array[String]
+      def add: (_Station station) -> Array[_Station]
+      def remove: (_Station station) -> _Station?
+    end
+  end
+end
