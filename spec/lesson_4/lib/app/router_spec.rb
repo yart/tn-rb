@@ -14,13 +14,15 @@ describe Lesson4::App::Router do
 
   describe '.route' do
     before do
-      allow(App::Router::Config).to receive(:load_routes).and_call_original
-      allow(File).to receive(:read).with(routes_file).and_return(<<~ROUTES)
+      routes_list = <<~ROUTES
         set '/', to: 'main_menu#list'
         set '/stations/list'
         set '/stations/add', to: 'stations#add'
         set '/stations/:id/edit'
       ROUTES
+
+      allow(App::Router::Config).to receive(:load_routes).and_call_original
+      allow(File).to receive(:read).with(routes_file).and_return(routes_list)
 
       router.draw
     end
@@ -72,9 +74,11 @@ describe Lesson4::App::Router do
 
   describe '.draw' do
     it 'loads routes from config/routes.rb' do
-      expect(File).to receive(:read).with(routes_file).and_return(<<~ROUTES)
+      routes_list = <<~ROUTES
         set '/stations/add', to: 'stations#add'
       ROUTES
+      allow(File).to receive(:read).with(routes_file).and_return(routes_list)
+
       expect { router.draw }.not_to raise_error
       expect(router.routes).to include('/stations/add')
     end
