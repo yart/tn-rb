@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'router/controller_factory'
 require_relative 'router/config'
 require_relative 'router/parser'
 
@@ -25,14 +26,13 @@ module Lesson4
 
           raise RoutingError, "Route not found: #{path}" unless route
 
-          controller          = route[:controller].to_s
-          action              = route[:action].to_s
-          controller_class    = Object.const_get("#{constantize(controller)}Controller")
+          controller_name = route[:controller].to_s
+          action = route[:action].to_s
+
+          controller_class = ControllerFactory.get_controller(controller_name)
           controller_instance = controller_class.new({ query: Parser.parse_query(query) }.merge(route[:params]))
 
           controller_instance.public_send(action)
-        rescue NameError
-          raise RoutingError, "Controller not found: #{constantize(controller)}Controller"
         end
 
         def reset!

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Lesson4
   module App
     module Router
@@ -16,9 +14,14 @@ module Lesson4
         def self.load_routes(file)
           routes_code = File.read(file)
 
-          raise RoutingError, "Routes file #{file} should contain at least on route!" if routes_code.empty?
+          safe_dsl_context = RouteDSL.new
+          safe_dsl_context.instance_eval(routes_code)
+        end
 
-          eval(routes_code, binding)
+        class RouteDSL
+          def set(path, to: nil)
+            Config.set(path, to: to)
+          end
         end
       end
     end
