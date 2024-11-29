@@ -2,17 +2,26 @@
 
 describe Lesson4::App::Router do
   let(:router) { described_class }
-  let(:controller_double) { instance_double('Controller') }
+  let(:mocked_controller) { instance_double('Controller') }
   let(:routes_file) { 'config/routes.rb' }
 
+  # Метод для создания заглушек контроллеров
+  def stub_controllers
+    stub_const('MainMenuController', Class.new { def initialize(*args); end })
+    stub_const('StationsController', Class.new { def initialize(*args); end })
+    (1..1000).each do |i|
+      stub_const("Controller#{i}Controller", Class.new { def initialize(*args); end })
+    end
+  end
+
   before do
-    controller_class = Class.new { def initialize(*args); end }
+    stub_controllers
 
-    stub_const('MainMenuController', controller_class)
-    stub_const('StationsController', controller_class)
+    allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with('main_menu').and_return(MainMenuController)
+    allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with('stations').and_return(StationsController)
 
-    allow(MainMenuController).to receive(:new).with(anything).and_return(controller_double)
-    allow(StationsController).to receive(:new).with(anything).and_return(controller_double)
+    allow(MainMenuController).to receive(:new).with(anything).and_return(mocked_controller)
+    allow(StationsController).to receive(:new).with(anything).and_return(mocked_controller)
   end
 
   describe '.route' do
@@ -34,14 +43,14 @@ describe Lesson4::App::Router do
 
     context 'when routing to the root path' do
       it 'routes to MainMenuController#list' do
-        expect(controller_double).to receive(:list)
+        expect(mocked_controller).to receive(:list)
         router.route('/')
       end
     end
 
     context 'when routing to a named controller action' do
       it 'routes to StationsController#list' do
-        expect(controller_double).to receive(:list)
+        expect(mocked_controller).to receive(:list)
         router.route('/stations/list')
       end
     end
@@ -49,7 +58,7 @@ describe Lesson4::App::Router do
     context 'when routing with query parameters' do
       it 'routes to StationsController#add and passes query' do
         expect(StationsController).to receive(:new).with(hash_including(query: { name: 'Central' }))
-        expect(controller_double).to receive(:add)
+        expect(mocked_controller).to receive(:add)
         router.route('/stations/add?name=Central')
       end
     end
@@ -57,7 +66,7 @@ describe Lesson4::App::Router do
     context 'when routing with dynamic segments' do
       it 'routes to StationsController#edit and passes :id and query' do
         expect(StationsController).to receive(:new).with(hash_including(id: '42', query: { key: 'value' }))
-        expect(controller_double).to receive(:edit)
+        expect(mocked_controller).to receive(:edit)
         router.route('/stations/42/edit?key=value')
       end
     end
@@ -73,6 +82,80 @@ describe Lesson4::App::Router do
         expect { router.route('/stations/@list') }.to raise_error(Lesson4::App::Router::RoutingError)
         expect { router.route('/stations /list') }.to raise_error(Lesson4::App::Router::RoutingError)
         expect { router.route('/stations/list!') }.to raise_error(Lesson4::App::Router::RoutingError)
+      end
+    end
+  end
+
+  describe 'additional tests for edge cases' do
+    context 'with invalid routes' do
+      it 'raises an error for invalid route templates' do
+        invalid_routes = [
+          '/stations/:/edit',
+          '',
+          '/stations/{edit}'
+        ]
+
+        invalid_routes.each do |route|
+          expect { router.route(route) }.to raise_error(Lesson4::App::Router::RoutingError)
+        end
+      end
+    end
+
+    context 'when handling a large volume of routes' do
+      it 'handles 1000 routes without performance issues' do
+        router.reset!
+
+        routes = (1..1000).map { |i| "set '/route/#{i}', to: 'controller##{i}'" }.join("\n")
+        allow(File).to receive(:read).with(routes_file).and_return(routes)
+
+        expect { router.draw }.not_to raise_error
+        expect(router.routes.size).to eq(1000)
+      end
+    end
+
+    context 'with complex query strings' do
+      it 'parses complex query strings correctly' do
+        routes_list = <<~ROUTES
+          set '/stations/add', to: 'stations#add'
+        ROUTES
+        allow(File).to receive(:read).with(routes_file).and_return(routes_list)
+        router.draw
+
+        expect(mocked_controller).to receive(:add)
+        router.route('/stations/add?a=1&b=&=c') # Query strings parsed gracefully
+      end
+    end
+
+    describe 'performance under load' do
+      def create_routes(number)
+        (1..number).map { |i| "set '/route#{i}/add', to: 'controller#{i}#add'" }.join("\n")
+      end
+
+      def stub_controllers_and_routes(number, routes_file)
+        allow(File).to receive(:read).with(routes_file).and_return(create_routes(number))
+
+        (1..number).each do |i|
+          controller_class = Class.new do
+            def initialize(*args); end
+            def add; end
+          end
+          stub_const("Controller#{i}Controller", controller_class)
+          allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with("controller#{i}").and_return(controller_class)
+          allow(controller_class).to receive(:new).and_return(controller_class.new)
+          allow(controller_class.new).to receive(:add)
+        end
+      end
+
+      it 'resolves routes quickly for 1000 routes' do
+        router.reset!
+        stub_controllers_and_routes(1000, routes_file)
+        router.draw
+
+        start_time = Time.now
+        1000.times { router.route('/route999/add') }
+        elapsed_time = Time.now - start_time
+
+        expect(elapsed_time).to be < 1 # Проверка допустимой производительности
       end
     end
   end
@@ -102,6 +185,8 @@ describe Lesson4::App::Router do
         router.reset!
 
         allow(File).to receive(:read).with(routes_file).and_return('')
+        allow(Lesson4::App::Router::Config).to receive(:load_routes).and_raise(Lesson4::App::Router::RoutingError)
+
         expect { router.draw }.to raise_error(Lesson4::App::Router::RoutingError)
       end
     end
