@@ -2,18 +2,18 @@
 
 describe Lesson4::App::Router::Config do
   let(:dsl) { described_class }
-  let(:router_instance) { Class.new { extend App::Router } }
+  let(:router_instance) { Lesson4::App::Router }
 
   describe '.set' do
     it 'adds a route to the router' do
       expect { dsl.set '/stations/list' }.to change { router_instance.routes.size }.by(1)
-      expect(router_instance.routes).to include('/stations/list')
+      expect(router_instance.routes.keys).to include(%r{^/stations/list$})
     end
 
     it 'raises an error for duplicate routes' do
-      dsl.set '/stations/list'
+      dsl.set '/controller/action'
 
-      expect { dsl.set '/stations/list' }.to raise_error(App::Router::RoutingError)
+      expect { dsl.set '/controller/action' }.to raise_error(Lesson4::App::Router::RoutingError)
     end
   end
 
@@ -26,7 +26,7 @@ describe Lesson4::App::Router::Config do
 
       allow(File).to receive(:read).with('config/routes.rb').and_return(routes)
 
-      expect { dsl.load_routes(router_instance, 'config/routes.rb') }.to change { router_instance.routes.size }.by(2)
+      expect { dsl.load_routes('config/routes.rb') }.to change { router_instance.routes.size }.by(2)
     end
   end
 end

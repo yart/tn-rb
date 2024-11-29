@@ -6,14 +6,19 @@ describe Lesson4::App::Router do
   let(:routes_file) { 'config/routes.rb' }
 
   before do
-    stub_const('MainMenuController', Class.new)
-    stub_const('StationsController', Class.new)
-    allow(MainMenuController).to receive(:new).and_return(controller_double)
-    allow(StationsController).to receive(:new).and_return(controller_double)
+    controller_class = Class.new { def initialize(*args); end }
+
+    stub_const('MainMenuController', controller_class)
+    stub_const('StationsController', controller_class)
+
+    allow(MainMenuController).to receive(:new).with(anything).and_return(controller_double)
+    allow(StationsController).to receive(:new).with(anything).and_return(controller_double)
   end
 
   describe '.route' do
     before do
+      router.reset!
+
       routes_list = <<~ROUTES
         set '/', to: 'main_menu#list'
         set '/stations/list'
@@ -21,7 +26,7 @@ describe Lesson4::App::Router do
         set '/stations/:id/edit'
       ROUTES
 
-      allow(App::Router::Config).to receive(:load_routes).and_call_original
+      allow(Lesson4::App::Router::Config).to receive(:load_routes).and_call_original
       allow(File).to receive(:read).with(routes_file).and_return(routes_list)
 
       router.draw
@@ -43,7 +48,7 @@ describe Lesson4::App::Router do
 
     context 'when routing with query parameters' do
       it 'routes to StationsController#add and passes query' do
-        expect(StationsController).to receive(:new).with(hash_including(query: 'name=Central'))
+        expect(StationsController).to receive(:new).with(hash_including(query: { name: 'Central' }))
         expect(controller_double).to receive(:add)
         router.route('/stations/add?name=Central')
       end
@@ -51,7 +56,7 @@ describe Lesson4::App::Router do
 
     context 'when routing with dynamic segments' do
       it 'routes to StationsController#edit and passes :id and query' do
-        expect(StationsController).to receive(:new).with(hash_including(id: '42', query: 'key=value'))
+        expect(StationsController).to receive(:new).with(hash_including(id: '42', query: { key: 'value' }))
         expect(controller_double).to receive(:edit)
         router.route('/stations/42/edit?key=value')
       end
@@ -59,39 +64,45 @@ describe Lesson4::App::Router do
 
     context 'when the route is not defined' do
       it 'raises a routing error' do
-        expect { router.route('/unknown/path') }.to raise_error(App::Router::RoutingError)
+        expect { router.route('/unknown/path') }.to raise_error(Lesson4::App::Router::RoutingError)
       end
     end
 
     context 'when route contains invalid characters' do
       it 'raises a routing error for invalid path format' do
-        expect { router.route('/stations/@list') }.to raise_error(App::Router::RoutingError)
-        expect { router.route('/stations /list') }.to raise_error(App::Router::RoutingError)
-        expect { router.route('/stations/list!') }.to raise_error(App::Router::RoutingError)
+        expect { router.route('/stations/@list') }.to raise_error(Lesson4::App::Router::RoutingError)
+        expect { router.route('/stations /list') }.to raise_error(Lesson4::App::Router::RoutingError)
+        expect { router.route('/stations/list!') }.to raise_error(Lesson4::App::Router::RoutingError)
       end
     end
   end
 
   describe '.draw' do
     it 'loads routes from config/routes.rb' do
-      routes_list = <<~ROUTES
+      router.reset!
+
+      routes = <<~ROUTES
         set '/stations/add', to: 'stations#add'
       ROUTES
-      allow(File).to receive(:read).with(routes_file).and_return(routes_list)
+      allow(File).to receive(:read).with(routes_file).and_return(routes)
 
       expect { router.draw }.not_to raise_error
-      expect(router.routes).to include('/stations/add')
+      expect(router.routes.keys).to include(%r{^/stations/add$})
     end
 
     context 'when the routes file is missing or empty' do
       it 'raises an error for missing file' do
+        router.reset!
+
         allow(File).to receive(:read).with(routes_file).and_raise(Errno::ENOENT)
-        expect { router.draw }.to raise_error(App::Router::RoutingError)
+        expect { router.draw }.to raise_error(Lesson4::App::Router::RoutingError)
       end
 
       it 'raises an error for empty routes file' do
+        router.reset!
+
         allow(File).to receive(:read).with(routes_file).and_return('')
-        expect { router.draw }.to raise_error(App::Router::RoutingError)
+        expect { router.draw }.to raise_error(Lesson4::App::Router::RoutingError)
       end
     end
   end

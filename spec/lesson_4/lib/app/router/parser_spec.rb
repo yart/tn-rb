@@ -30,7 +30,7 @@ describe Lesson4::App::Router::Parser do
 
     it 'handles invalid query strings gracefully' do
       expect(parser.parse_query('=value')).to eq({})
-      expect(parser.parse_query('key=')).to eq({ 'key' => '' })
+      expect(parser.parse_query('key=')).to eq({ key: '' })
     end
   end
 end
