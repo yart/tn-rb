@@ -1,0 +1,26 @@
+module Lesson4
+  module TrueWay
+    module Model
+      class Base
+        self.@table_name: String
+
+        attr_accessor self.db_adapter: DatabaseAdapter::Base?
+        attr_reader id: String?
+        attr_accessor attributes: Hash[String, untyped]
+
+        def self.table_name: () -> String
+        def self.find: (id: String) -> Base?
+        def self.all: () -> Array[Base]
+        def self.create: (attributes: Hash[String, untyped]) -> Base
+
+        def initialize: (attributes: Hash[String, untyped]) -> void
+        def save: () -> Base
+        def destroy: () -> void
+
+        private
+
+        def self.wrap: (Hash[String, untyped]?) -> Base?
+      end
+    end
+  end
+end

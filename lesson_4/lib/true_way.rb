@@ -1,3 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'true_way/router'
+Dir.glob(File.join(__dir__, 'true_way/**/*.rb')).each do |file|
+  require_relative file
+end

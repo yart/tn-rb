@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Lesson4
-  module App
+  module TrueWay
     # Manages application-wide configurations.
     class Config
       class ConfigurationError < StandardError; end

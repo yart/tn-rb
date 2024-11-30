@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Lesson4
-  module App
+  module TrueWay
     # The `Model` module provides a base class and supporting functionality
     # for all models in the application. It abstracts the interaction with
     # the database adapter, offering a clean interface for CRUD operations.
@@ -148,7 +148,3 @@ module Lesson4
     end
   end
 end
-
-require_relative 'model/route'
-require_relative 'model/station'
-require_relative 'model/train'

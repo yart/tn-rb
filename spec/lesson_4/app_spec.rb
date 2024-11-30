@@ -4,7 +4,7 @@ describe Lesson4::App do
   describe '.l10n' do
     context 'when the localization path is configured' do
       before do
-        Lesson4::App::Config.l10n_path = '/path/to/l10n.yml'
+        Lesson4::TrueWay::Config.l10n_path = '/path/to/l10n.yml'
         allow(YAML).to receive(:load_file)
           .and_return({ key: 'value' })
       end
@@ -15,17 +15,17 @@ describe Lesson4::App do
     end
 
     context 'when the localization path is not configured' do
-      before { Lesson4::App::Config.l10n_path = nil }
+      before { Lesson4::TrueWay::Config.l10n_path = nil }
 
       it 'raises a ConfigurationError' do
-        expect { described_class.l10n }.to raise_error(Lesson4::App::Config::ConfigurationError, /l10n_path/)
+        expect { described_class.l10n }.to raise_error(Lesson4::TrueWay::Config::ConfigurationError, /l10n_path/)
       end
     end
   end
 
   describe '.db_adapter' do
     context 'when the database adapter is configured' do
-      before { Lesson4::App::Config.db_adapter = :adapter }
+      before { Lesson4::TrueWay::Config.db_adapter = :adapter }
 
       it 'returns the configured database adapter' do
         expect(described_class.db_adapter).to eq :adapter
@@ -33,10 +33,10 @@ describe Lesson4::App do
     end
 
     context 'when the database adapter is not configured' do
-      before { Lesson4::App::Config.db_adapter = nil }
+      before { Lesson4::TrueWay::Config.db_adapter = nil }
 
       it 'raises a ConfigurationError' do
-        expect { described_class.db_adapter }.to raise_error(Lesson4::App::Config::ConfigurationError, /db_adapter/)
+        expect { described_class.db_adapter }.to raise_error(Lesson4::TrueWay::Config::ConfigurationError, /db_adapter/)
       end
     end
   end

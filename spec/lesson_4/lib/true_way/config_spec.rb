@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Lesson4::App::Config do
+describe Lesson4::TrueWay::Config do
   after do
     # Очистка состояния после каждого теста
     described_class.instance_variable_set(:@db_adapter, nil)
@@ -20,7 +20,7 @@ describe Lesson4::App::Config do
     context 'when not configured' do
       it 'raises a ConfigurationError' do
         expect { described_class.db_adapter }
-          .to raise_error(Lesson4::App::Config::ConfigurationError, /db_adapter/)
+          .to raise_error(Lesson4::TrueWay::Config::ConfigurationError, /db_adapter/)
       end
     end
   end
@@ -37,7 +37,7 @@ describe Lesson4::App::Config do
     context 'when not configured' do
       it 'raises a ConfigurationError' do
         expect { described_class.l10n_path }
-          .to raise_error(Lesson4::App::Config::ConfigurationError, /l10n_path/)
+          .to raise_error(Lesson4::TrueWay::Config::ConfigurationError, /l10n_path/)
       end
     end
   end
@@ -54,7 +54,7 @@ describe Lesson4::App::Config do
     context 'when not configured' do
       it 'raises a ConfigurationError' do
         expect { described_class.routes_path }
-          .to raise_error(Lesson4::App::Config::ConfigurationError, /routes_path/)
+          .to raise_error(Lesson4::TrueWay::Config::ConfigurationError, /routes_path/)
       end
     end
   end

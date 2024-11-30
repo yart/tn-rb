@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Lesson4::App::Model::Base do
+describe Lesson4::TrueWay::Model::Base do
   let(:db_path) { './spec/test_db' }
   let(:db_adapter) { DatabaseAdapter::SimpleDB.new(path: db_path) }
 
@@ -15,7 +15,8 @@ describe Lesson4::App::Model::Base do
 
   after { FileUtils.rm_rf(db_path) }
 
-  class TestModel < Lesson4::App::Model::Base; end
+  class TestModel < Lesson4::TrueWay::Model::Base
+  end
 
   describe '.create' do
     it 'creates a new record and returns an instance' do
