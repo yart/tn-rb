@@ -5,10 +5,11 @@ require 'yaml'
 require_relative '../lib/cui'
 require_relative '../lib/database_adapter'
 require_relative 'lib/railroad'
-require_relative 'app/config'
-require_relative 'app/model'
-require_relative 'app/view'
-require_relative 'app/controller'
+require_relative 'lib/true_way'
+
+Dir.glob(File.join(__dir__, 'app/**/*.rb')).each do |file|
+  require_relative file
+end
 
 module Lesson4
   # Represents the Railroad app.

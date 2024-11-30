@@ -49,5 +49,3 @@ module Lesson4
     end
   end
 end
-
-require_relative 'config/routes'
