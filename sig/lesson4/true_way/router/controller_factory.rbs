@@ -1,0 +1,10 @@
+module Lesson4
+  module TrueWay
+    module Router
+      class ControllerFactory
+        def self.get_controller: (String name) -> Class
+        def self.constantize: (String camel_cased_word) -> String
+      end
+    end
+  end
+end

@@ -1,0 +1,21 @@
+module Lesson4
+  module TrueWay
+    module Router
+      @routes: Hash[Regexp, { path: String, controller: Symbol, action: Symbol, params: Hash[Symbol, String]? }]
+
+      attr_reader self.routes: Hash[Regexp, { path: String, controller: Symbol, action: Symbol, params: Hash[Symbol, String]? }]
+
+      def self.draw: -> void
+      def self.route: (String path_with_query) -> void
+      def self.reset!: -> void
+
+      private
+
+      def self.load_routes: () -> void
+      def self.validate_route_format!: (String path) -> void
+      def self.find_route: (String path) -> { path: String, controller: Symbol, action: Symbol, params: Hash[Symbol, String] }
+      def self.process_route: ({ controller: Symbol, action: Symbol, params: Hash[Symbol, String] }, String query) -> void
+      def self.create_route_info: ({ path: String, controller: Symbol, action: Symbol }, String path) -> { path: String, controller: Symbol, action: Symbol, params: Hash[Symbol, String] }
+    end
+  end
+end

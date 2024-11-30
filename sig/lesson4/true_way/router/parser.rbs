@@ -1,0 +1,12 @@
+module Lesson4
+  module TrueWay
+    module Router
+      module Parser
+        def self.split_path_and_query: (String path_with_query) -> [String, String]
+        def self.path_to_regex: (String path) -> Regexp
+        def self.extract_dynamic_params: (String route_path, String actual_path) -> Hash[Symbol, String]
+        def self.parse_query: (String query) -> Hash[Symbol, String]
+      end
+    end
+  end
+end
