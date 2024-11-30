@@ -7,7 +7,6 @@ module CUI
     class Number < Text
       include Numerable
 
-      # @param [Hash] settings
       # @option settings [String] :label an explanation for prompt
       # @option settings [String] :prompt '> " by default
       # @option settings [Boolean] :float

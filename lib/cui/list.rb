@@ -11,7 +11,7 @@ module CUI
     attr_reader :parent
 
     # @param settings [Hash]
-    # @option settings [Hash{Symbol => String}, Array<Array<Symbol, String>] :items
+    # @option settings [Hash{Symbol => String}, Array<Array<Symbol, String>>] :items
     # @option settings [Integer] :default 0 by default
     # @option settings [String] :pointer
     # @option settings [String] :go_back

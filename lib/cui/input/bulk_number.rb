@@ -7,7 +7,6 @@ module CUI
     class BulkNumber < BulkText
       include Numerable
 
-      # @param [Hash] settings
       # @option settings [String] :label an explanation for prompt
       # @option settings [String] :prompt '> " by default
       # @option settings [Integer] :limit of list if tt has been defined
