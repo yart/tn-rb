@@ -6,10 +6,10 @@ describe Lesson4::TrueWay::Router do
   let(:routes_file) { 'config/routes.rb' }
 
   def stub_controllers
-    stub_const('MainMenuController', Class.new { def initialize(*args); end })
-    stub_const('StationsController', Class.new { def initialize(*args); end })
+    stub_const('MainMenuController', Class.new { def initialize(*); end })
+    stub_const('StationsController', Class.new { def initialize(*); end })
     (1..1000).each do |i|
-      stub_const("Controller#{i}Controller", Class.new { def initialize(*args); end })
+      stub_const("Controller#{i}Controller", Class.new { def initialize(*); end })
     end
   end
 
@@ -34,7 +34,7 @@ describe Lesson4::TrueWay::Router do
         set '/stations/:id/edit'
       ROUTES
 
-      allow(Lesson4::TrueWay::Router::Config).to receive(:load_routes).and_call_original
+      Lesson4::TrueWay::Config.routes_path = routes_file
       allow(File).to receive(:read).with(routes_file).and_return(routes_list)
 
       router.draw
@@ -135,7 +135,7 @@ describe Lesson4::TrueWay::Router do
 
         (1..number).each do |i|
           controller_class = Class.new do
-            def initialize(*args); end
+            def initialize(*); end
             def add; end
           end
           stub_const("Controller#{i}Controller", controller_class)

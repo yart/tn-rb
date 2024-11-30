@@ -55,9 +55,10 @@ module Lesson4
         #
         # @see Config.load_routes
         def load_routes
-          Config.load_routes('config/routes.rb')
+          routes_path = TrueWay::Config.routes_path
+          Config.load_routes(routes_path)
         rescue Errno::ENOENT
-          raise Error::RoutesFileNotFoundError, 'config/routes.rb'
+          raise Error::RoutesFileNotFoundError, routes_path
         end
 
         # Validates the format of the path.
