@@ -2,25 +2,16 @@
 
 describe Lesson4::TrueWay::Router do
   let(:router) { described_class }
-  let(:mocked_controller) { instance_double('Controller') }
+  let(:mocked_main_menu_controller) { instance_spy('MainMenuController') }
+  let(:mocked_stations_controller) { instance_spy('StationsController') }
   let(:routes_file) { 'config/routes.rb' }
 
-  def stub_controllers
-    stub_const('MainMenuController', Class.new { def initialize(*); end })
-    stub_const('StationsController', Class.new { def initialize(*); end })
-    (1..1000).each do |i|
-      stub_const("Controller#{i}Controller", Class.new { def initialize(*); end })
-    end
-  end
-
   before do
-    stub_controllers
+    stub_const('MainMenuController', create_controller_class)
+    stub_const('StationsController', create_controller_class)
 
-    allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with('main_menu').and_return(MainMenuController)
-    allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with('stations').and_return(StationsController)
-
-    allow(MainMenuController).to receive(:new).with(anything).and_return(mocked_controller)
-    allow(StationsController).to receive(:new).with(anything).and_return(mocked_controller)
+    allow(MainMenuController).to receive(:new).with(anything).and_return(mocked_main_menu_controller)
+    allow(StationsController).to receive(:new).with(anything).and_return(mocked_stations_controller)
   end
 
   describe '.route' do
@@ -42,31 +33,31 @@ describe Lesson4::TrueWay::Router do
 
     context 'when routing to the root path' do
       it 'routes to MainMenuController#list' do
-        expect(mocked_controller).to receive(:list)
         router.route('/')
+        expect(mocked_main_menu_controller).to have_received(:list)
       end
     end
 
     context 'when routing to a named controller action' do
       it 'routes to StationsController#list' do
-        expect(mocked_controller).to receive(:list)
         router.route('/stations/list')
+        expect(mocked_stations_controller).to have_received(:list)
       end
     end
 
     context 'when routing with query parameters' do
       it 'routes to StationsController#add and passes query' do
-        expect(StationsController).to receive(:new).with(hash_including(query: { name: 'Central' }))
-        expect(mocked_controller).to receive(:add)
+        allow(mocked_stations_controller).to receive(:new).with(hash_including(query: { name: 'Central' }))
         router.route('/stations/add?name=Central')
+        expect(mocked_stations_controller).to have_received(:add)
       end
     end
 
     context 'when routing with dynamic segments' do
       it 'routes to StationsController#edit and passes :id and query' do
-        expect(StationsController).to receive(:new).with(hash_including(id: '42', query: { key: 'value' }))
-        expect(mocked_controller).to receive(:edit)
+        allow(mocked_stations_controller).to receive(:new).with(hash_including(id: '42', query: { key: 'value' }))
         router.route('/stations/42/edit?key=value')
+        expect(mocked_stations_controller).to have_received(:edit)
       end
     end
 
@@ -120,31 +111,12 @@ describe Lesson4::TrueWay::Router do
         allow(File).to receive(:read).with(routes_file).and_return(routes_list)
         router.draw
 
-        expect(mocked_controller).to receive(:add)
         router.route('/stations/add?a=1&b=&=c')
+        expect(mocked_stations_controller).to have_received(:add)
       end
     end
 
     describe 'performance under load' do
-      def create_routes(number)
-        (1..number).map { |i| "set '/route#{i}/add', to: 'controller#{i}#add'" }.join("\n")
-      end
-
-      def stub_controllers_and_routes(number, routes_file)
-        allow(File).to receive(:read).with(routes_file).and_return(create_routes(number))
-
-        (1..number).each do |i|
-          controller_class = Class.new do
-            def initialize(*); end
-            def add; end
-          end
-          stub_const("Controller#{i}Controller", controller_class)
-          allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with("controller#{i}").and_return(controller_class)
-          allow(controller_class).to receive(:new).and_return(controller_class.new)
-          allow(controller_class.new).to receive(:add)
-        end
-      end
-
       it 'resolves routes quickly for 1000 routes' do
         router.reset!
         stub_controllers_and_routes(1000, routes_file)
@@ -184,10 +156,40 @@ describe Lesson4::TrueWay::Router do
         router.reset!
 
         allow(File).to receive(:read).with(routes_file).and_return('')
-        allow(Lesson4::TrueWay::Router::Config).to receive(:load_routes).and_raise(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError.new('config/routes.rb'))
+        allow(Lesson4::TrueWay::Router::Config).to receive(:load_routes).and_raise(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError.new(routes_file))
 
         expect { router.draw }.to raise_error(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError)
       end
+    end
+  end
+
+  def create_routes(number)
+    (1..number).map { |i| "set '/route#{i}/add', to: 'controller#{i}#add'" }.join("\n")
+  end
+
+  def stub_controllers_and_routes(number, routes_file)
+    allow(File).to receive(:read).with(routes_file).and_return(create_routes(number))
+    create_and_stub_controllers(number)
+  end
+
+  def create_and_stub_controllers(number)
+    (1..number).each do |i|
+      stub_controller(i)
+    end
+  end
+
+  def stub_controller(number)
+    controller_class = create_controller_class
+    stub_const("Controller#{number}Controller", controller_class)
+    allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with("controller#{number}").and_return(controller_class)
+    allow(controller_class).to receive(:new).and_return(controller_class.new)
+    allow(controller_class.new).to receive(:add)
+  end
+
+  def create_controller_class
+    Class.new do
+      def initialize(*); end
+      def add; end
     end
   end
 end
