@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Lesson4::App::Router::Parser do
+describe Lesson4::TrueWay::Router::Parser do
   let(:parser) { described_class }
 
   describe '.split_path_and_query' do

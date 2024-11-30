@@ -1,10 +1,10 @@
-require 'rspec'
+# frozen_string_literal: true
 
-describe Lesson4::App::Router::Config do
-  let(:router_instance) { Lesson4::App::Router }
+describe Lesson4::TrueWay::Router::Config do
+  let(:router_instance) { Lesson4::TrueWay::Router }
 
   describe 'RouteDSL' do
-    let(:dsl) { Lesson4::App::Router::Config::RouteDSL.new }
+    let(:dsl) { Lesson4::TrueWay::Router::Config::RouteDSL.new }
 
     it 'adds routes using set method in DSL context' do
       expect { dsl.set '/stations/list' }.to change { router_instance.routes.size }.by(1)
@@ -14,7 +14,7 @@ describe Lesson4::App::Router::Config do
     it 'raises an error for duplicate routes' do
       dsl.set('/controller/action')
 
-      expect { dsl.set('/controller/action') }.to raise_error(Lesson4::App::Router::RoutingError)
+      expect { dsl.set('/controller/action') }.to raise_error(Lesson4::TrueWay::Router::Error::DuplicateRouteError)
     end
   end
 
@@ -27,7 +27,7 @@ describe Lesson4::App::Router::Config do
 
       allow(File).to receive(:read).with('config/routes.rb').and_return(routes)
 
-      expect { Lesson4::App::Router::Config.load_routes('config/routes.rb') }.to change { router_instance.routes.size }.by(2)
+      expect { Lesson4::TrueWay::Router::Config.load_routes('config/routes.rb') }.to change { router_instance.routes.size }.by(2)
     end
   end
 end

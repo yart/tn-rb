@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Lesson4::App::Router::ControllerFactory do
+describe Lesson4::TrueWay::Router::ControllerFactory do
   let(:factory) { described_class }
 
   before do
@@ -12,8 +12,8 @@ describe Lesson4::App::Router::ControllerFactory do
       expect(factory.get_controller('main_menu')).to eq(MainMenuController)
     end
 
-    it 'raises RoutingError if the controller class is not found' do
-      expect { factory.get_controller('unknown') }.to raise_error(Lesson4::App::Router::RoutingError, /Controller not found/)
+    it 'raises ControllerNotFoundError if the controller class is not found' do
+      expect { factory.get_controller('unknown') }.to raise_error(Lesson4::TrueWay::Router::Error::ControllerNotFoundError, /Controller not found/)
     end
   end
 end

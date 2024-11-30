@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-describe Lesson4::App::Router do
+describe Lesson4::TrueWay::Router do
   let(:router) { described_class }
   let(:mocked_controller) { instance_double('Controller') }
   let(:routes_file) { 'config/routes.rb' }
 
-  # Метод для создания заглушек контроллеров
   def stub_controllers
     stub_const('MainMenuController', Class.new { def initialize(*args); end })
     stub_const('StationsController', Class.new { def initialize(*args); end })
@@ -17,8 +16,8 @@ describe Lesson4::App::Router do
   before do
     stub_controllers
 
-    allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with('main_menu').and_return(MainMenuController)
-    allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with('stations').and_return(StationsController)
+    allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with('main_menu').and_return(MainMenuController)
+    allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with('stations').and_return(StationsController)
 
     allow(MainMenuController).to receive(:new).with(anything).and_return(mocked_controller)
     allow(StationsController).to receive(:new).with(anything).and_return(mocked_controller)
@@ -35,7 +34,7 @@ describe Lesson4::App::Router do
         set '/stations/:id/edit'
       ROUTES
 
-      allow(Lesson4::App::Router::Config).to receive(:load_routes).and_call_original
+      allow(Lesson4::TrueWay::Router::Config).to receive(:load_routes).and_call_original
       allow(File).to receive(:read).with(routes_file).and_return(routes_list)
 
       router.draw
@@ -72,23 +71,23 @@ describe Lesson4::App::Router do
     end
 
     context 'when the route is not defined' do
-      it 'raises a routing error' do
-        expect { router.route('/unknown/path') }.to raise_error(Lesson4::App::Router::RoutingError)
+      it 'raises a RouteNotFoundError' do
+        expect { router.route('/unknown/path') }.to raise_error(Lesson4::TrueWay::Router::Error::RouteNotFoundError)
       end
     end
 
     context 'when route contains invalid characters' do
-      it 'raises a routing error for invalid path format' do
-        expect { router.route('/stations/@list') }.to raise_error(Lesson4::App::Router::RoutingError)
-        expect { router.route('/stations /list') }.to raise_error(Lesson4::App::Router::RoutingError)
-        expect { router.route('/stations/list!') }.to raise_error(Lesson4::App::Router::RoutingError)
+      it 'raises an InvalidRouteFormatError' do
+        expect { router.route('/stations/@list') }.to raise_error(Lesson4::TrueWay::Router::Error::InvalidRouteFormatError)
+        expect { router.route('/stations /list') }.to raise_error(Lesson4::TrueWay::Router::Error::InvalidRouteFormatError)
+        expect { router.route('/stations/list!') }.to raise_error(Lesson4::TrueWay::Router::Error::InvalidRouteFormatError)
       end
     end
   end
 
   describe 'additional tests for edge cases' do
     context 'with invalid routes' do
-      it 'raises an error for invalid route templates' do
+      it 'raises an InvalidRouteFormatError for invalid route templates' do
         invalid_routes = [
           '/stations/:/edit',
           '',
@@ -96,7 +95,7 @@ describe Lesson4::App::Router do
         ]
 
         invalid_routes.each do |route|
-          expect { router.route(route) }.to raise_error(Lesson4::App::Router::RoutingError)
+          expect { router.route(route) }.to raise_error(Lesson4::TrueWay::Router::Error::InvalidRouteFormatError)
         end
       end
     end
@@ -122,7 +121,7 @@ describe Lesson4::App::Router do
         router.draw
 
         expect(mocked_controller).to receive(:add)
-        router.route('/stations/add?a=1&b=&=c') # Query strings parsed gracefully
+        router.route('/stations/add?a=1&b=&=c')
       end
     end
 
@@ -140,7 +139,7 @@ describe Lesson4::App::Router do
             def add; end
           end
           stub_const("Controller#{i}Controller", controller_class)
-          allow(Lesson4::App::Router::ControllerFactory).to receive(:get_controller).with("controller#{i}").and_return(controller_class)
+          allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with("controller#{i}").and_return(controller_class)
           allow(controller_class).to receive(:new).and_return(controller_class.new)
           allow(controller_class.new).to receive(:add)
         end
@@ -155,7 +154,7 @@ describe Lesson4::App::Router do
         1000.times { router.route('/route999/add') }
         elapsed_time = Time.now - start_time
 
-        expect(elapsed_time).to be < 1 # Проверка допустимой производительности
+        expect(elapsed_time).to be < 1
       end
     end
   end
@@ -174,20 +173,20 @@ describe Lesson4::App::Router do
     end
 
     context 'when the routes file is missing or empty' do
-      it 'raises an error for missing file' do
+      it 'raises a RoutesFileNotFoundError for missing file' do
         router.reset!
 
         allow(File).to receive(:read).with(routes_file).and_raise(Errno::ENOENT)
-        expect { router.draw }.to raise_error(Lesson4::App::Router::RoutingError)
+        expect { router.draw }.to raise_error(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError)
       end
 
-      it 'raises an error for empty routes file' do
+      it 'raises a RoutesFileNotFoundError for empty routes file' do
         router.reset!
 
         allow(File).to receive(:read).with(routes_file).and_return('')
-        allow(Lesson4::App::Router::Config).to receive(:load_routes).and_raise(Lesson4::App::Router::RoutingError)
+        allow(Lesson4::TrueWay::Router::Config).to receive(:load_routes).and_raise(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError.new('config/routes.rb'))
 
-        expect { router.draw }.to raise_error(Lesson4::App::Router::RoutingError)
+        expect { router.draw }.to raise_error(Lesson4::TrueWay::Router::Error::RoutesFileNotFoundError)
       end
     end
   end
