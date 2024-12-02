@@ -8,3 +8,4 @@ group :development do
   gem 'rubocop', require: false
   gem 'rubocop-rspec', require: false
 end
+gem 'simplecov', group: 'test'

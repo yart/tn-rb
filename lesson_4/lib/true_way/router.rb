@@ -92,7 +92,7 @@ module Lesson4
           raise Error::ControllerNotFoundError unless controller_class
 
           controller_instance = controller_class.new({ query: Parser.parse_query(query) }.merge(route_info[:params]))
-          controller_instance.public_send(action)
+          controller_instance.dispatch_action(action)
         end
 
         # Creates detailed route information by extracting parameters.

@@ -34,14 +34,14 @@ describe Lesson4::TrueWay::Router do
     context 'when routing to the root path' do
       it 'routes to MainMenuController#list' do
         router.route('/')
-        expect(mocked_main_menu_controller).to have_received(:list)
+        expect(mocked_main_menu_controller).to have_received(:dispatch_action).with('list')
       end
     end
 
     context 'when routing to a named controller action' do
       it 'routes to StationsController#list' do
         router.route('/stations/list')
-        expect(mocked_stations_controller).to have_received(:list)
+        expect(mocked_stations_controller).to have_received(:dispatch_action).with('list')
       end
     end
 
@@ -49,7 +49,7 @@ describe Lesson4::TrueWay::Router do
       it 'routes to StationsController#add and passes query' do
         allow(mocked_stations_controller).to receive(:new).with(hash_including(query: { name: 'Central' }))
         router.route('/stations/add?name=Central')
-        expect(mocked_stations_controller).to have_received(:add)
+        expect(mocked_stations_controller).to have_received(:dispatch_action).with('add')
       end
     end
 
@@ -57,7 +57,7 @@ describe Lesson4::TrueWay::Router do
       it 'routes to StationsController#edit and passes :id and query' do
         allow(mocked_stations_controller).to receive(:new).with(hash_including(id: '42', query: { key: 'value' }))
         router.route('/stations/42/edit?key=value')
-        expect(mocked_stations_controller).to have_received(:edit)
+        expect(mocked_stations_controller).to have_received(:dispatch_action).with('edit')
       end
     end
 
@@ -112,7 +112,7 @@ describe Lesson4::TrueWay::Router do
         router.draw
 
         router.route('/stations/add?a=1&b=&=c')
-        expect(mocked_stations_controller).to have_received(:add)
+        expect(mocked_stations_controller).to have_received(:dispatch_action).with('add')
       end
     end
 
@@ -183,13 +183,14 @@ describe Lesson4::TrueWay::Router do
     stub_const("Controller#{number}Controller", controller_class)
     allow(Lesson4::TrueWay::Router::ControllerFactory).to receive(:get_controller).with("controller#{number}").and_return(controller_class)
     allow(controller_class).to receive(:new).and_return(controller_class.new)
-    allow(controller_class.new).to receive(:add)
+    allow(controller_class.new).to receive(:dispatch_action).with('add')
   end
 
   def create_controller_class
     Class.new do
       def initialize(*); end
       def add; end
+      def dispatch_action(*); end
     end
   end
 end

@@ -1,0 +1,21 @@
+module Lesson4
+  module TrueWay
+    module Controller
+      class Base
+        @performed: bool
+        @current_action: String
+
+        attr_reader params: Hash[untyped, untyped]
+
+        def initialize: (**untyped params) -> void
+        def dispatch_action: (Symbol | String action_name) -> void
+
+        private
+
+        def render: (Symbol? | String? template_name) -> void
+        def derive_view_path: (Symbol | String template_name) -> String
+        def performed?: () -> bool
+      end
+    end
+  end
+end
