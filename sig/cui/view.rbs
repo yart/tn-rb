@@ -1,0 +1,9 @@
+module CUI
+  module View
+    private def draw: (String? element, ?new_line: bool) -> void
+    private def display: [T] { () -> T } -> void
+    private def hide_tty_cursor: () -> void
+    private def show_tty_cursor: () -> void
+    private def clear_line: () -> void
+  end
+end
