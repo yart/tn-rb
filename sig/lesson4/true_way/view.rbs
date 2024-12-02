@@ -1,0 +1,10 @@
+module Lesson4
+  module TrueWay
+    class View
+      @context: Binding
+
+      def initialize: (Binding) -> void
+      def render: (String) -> String
+    end
+  end
+end
