@@ -4,12 +4,12 @@ module CUI
   KEY_ARROW_RIGHT: String
   KEY_ARROW_UP: String
 
-  KEY_DOWN_RE: String
-  KEY_LEFT_RE: String
-  KEY_RIGHT_RE: String
-  KEY_UP_RE: String
+  KEY_DOWN_RE: Regexp
+  KEY_LEFT_RE: Regexp
+  KEY_RIGHT_RE: Regexp
+  KEY_UP_RE: Regexp
+  KEY_QUIT_RE: Regexp
 
-  KEY_QUIT_RE: String
   KEY_RETURN: String
   QUICK_QUIT: String
 
