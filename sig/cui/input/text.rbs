@@ -1,0 +1,24 @@
+module CUI
+  module Input
+    class Text
+      include View
+
+      @label: String
+      @lines: Integer
+      @prompt: String
+
+      PROMPT: String
+
+      def receive: -> String?
+
+      private
+
+      CLEAR_LINE: String
+      def perform_prompt: -> void
+      def show_prompt: -> void
+      def input_stream: -> void
+      def clear_lines: -> void
+      def convert: (String? entity) -> String?
+    end
+  end
+end
