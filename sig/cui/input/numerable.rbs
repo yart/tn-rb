@@ -1,0 +1,13 @@
+module CUI
+  module Input
+    module Numerable
+      @allow_negatives: bool
+      @float: bool
+
+      def bulk_convert: (Array[String] entities) -> Array[Integer]
+      def convert: (String entity) -> (Float | Integer)
+      def setup_floats: (Hash[Symbol, untyped] settings) -> bool
+      def setup_negatives: (Hash[Symbol, untyped] settings) -> bool
+    end
+  end
+end

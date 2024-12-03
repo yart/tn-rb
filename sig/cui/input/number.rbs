@@ -1,0 +1,7 @@
+module CUI
+  module Input
+    class Number
+      include Numerable
+    end
+  end
+end
