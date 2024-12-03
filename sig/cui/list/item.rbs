@@ -1,0 +1,11 @@
+module CUI
+  class List
+    class Item
+      attr_reader value: Symbol
+      attr_reader label: String
+
+      def initialize: (value: Symbol | String, label: String) -> void
+      def to_s: () -> String
+    end
+  end
+end

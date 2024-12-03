@@ -1,0 +1,48 @@
+module CUI
+  class List
+    include View
+    include Control
+
+    attr_reader parent: List?
+    attr_reader header: String?
+    attr_reader footer: String?
+
+    @position: Integer
+    @pointer: String
+    @go_back: String
+    @quit: String
+    @items: Array[Item]
+    @lines: Integer
+
+    def initialize: (
+        items?: Hash[Symbol, String] | Array[[Symbol, String]],
+        default?: Integer,
+        pointer?: String,
+        go_back?: String,
+        quit?: String,
+        parent?: List,
+        header?: String,
+        footer?: String
+      ) -> void
+
+    def select: () -> Symbol?
+    def child?: () -> bool
+
+    private
+
+    def draw_list: () -> void
+    def drop_list: () -> void
+    def pointer: (index: Integer) -> String
+    def define_items: (
+        items?: Hash[Symbol, String] | Array[[Symbol, String]],
+        default?: Integer,
+        pointer?: String,
+        go_back?: String,
+        quit?: String,
+        parent?: List,
+        header?: String,
+        footer?: String
+      ) -> void
+    def line_count: () -> void
+  end
+end
