@@ -1,0 +1,22 @@
+module CUI
+  module Input
+    class BulkText
+      SEPARATOR: String
+
+      @limit: Integer
+      @separator: String
+
+      def receive: -> Array[String]
+
+      private
+
+      def bulk_convert: (Array[untyped]) -> Array[untyped]
+      def cancelled_by_user?: -> bool
+      def limit_reached?: -> bool
+      def limited?: -> bool
+      def receive_list: -> Array[String]
+      def single_item?: (String input) -> bool
+      def split_list: (String input, Array[String] result) -> Array[String]
+    end
+  end
+end
