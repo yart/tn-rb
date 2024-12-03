@@ -1,0 +1,22 @@
+module CUI
+  module Control
+    @char: String?
+    @key: String?
+    @position: Integer
+    @result: Array[String]
+
+    private
+
+    def first_line?: -> bool
+    def go_back?: -> bool
+    def last_line?: -> bool
+    def move_down?: -> bool
+    def move_pointer: -> Integer
+    def move_up?: -> bool
+    def quit?: -> bool
+    def read_char: -> String
+    def read_composite_char: (IO stream) -> (Array[String] | untyped)
+    def select?: -> bool
+    def selection: -> Symbol?
+  end
+end
