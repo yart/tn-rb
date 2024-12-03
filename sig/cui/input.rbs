@@ -1,0 +1,54 @@
+module CUI
+  KEY_ARROW_DOWN: String
+  KEY_ARROW_LEFT: String
+  KEY_ARROW_RIGHT: String
+  KEY_ARROW_UP: String
+
+  KEY_DOWN_RE: String
+  KEY_LEFT_RE: String
+  KEY_RIGHT_RE: String
+  KEY_UP_RE: String
+
+  KEY_QUIT_RE: String
+  KEY_RETURN: String
+  QUICK_QUIT: String
+
+  CLEAR_LINE: String
+  HIDE_CURSOR: String
+  SHOW_CURSOR: String
+
+  module Input
+    TEXT: Symbol
+    NUMBER: Symbol
+
+    @type: Symbol
+    @list: bool
+
+    def self.new: (
+        text: String?,
+        prompt: String?,
+        type: Symbol?,
+        list: bool?,
+        max_items: Integer?,
+        separator: String?,
+        allow_negatives: bool?
+      ) -> (Text | Number | BulkText | BulkNumber)
+
+    private
+
+    def self.perform_instance: (
+      text: String?,
+      prompt: String?,
+      type: Symbol?,
+      list: bool?,
+      max_items: Integer?,
+      separator: String?,
+      allow_negatives: bool?
+    ) -> (Text | Number | BulkText | BulkNumber)
+
+    def self.type_number?: -> bool
+    def self.type_text?: -> bool
+    def self.type_bulk_number?: -> bool
+    def self.type_bulk_text?: -> bool
+  end
+end
