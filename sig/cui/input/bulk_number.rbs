@@ -1,0 +1,12 @@
+module CUI
+  module Input
+    class BulkNumber
+      private
+
+      def numbers_regex: -> Regexp
+      def numeric?: (String input) -> bool
+      def single_item?: (String input) -> bool
+      def split_list: (String input, Array[Integer] result) -> Array[Integer]
+    end
+  end
+end
